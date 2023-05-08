@@ -1,0 +1,15 @@
+.Common-header {
+    background-color: #0750a4;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    padding-left: 8vh;
+    padding-right: 8vh;
+}
+
+.Common-logo {
+    height: 7vh;
+}
