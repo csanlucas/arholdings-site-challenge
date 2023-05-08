@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
+import { IoIosArrowBack } from "react-icons/io";
 
 import Header from '../common/header'
 import Detail from './detail'
 import {API_URL, API_ENDPOINT} from '../utils/api'
+import './Product.css'
 
 const ProductInfo = (props) => {
     const [productdetail, setProductDetail] = useState()
     const {sku} = useParams()
+    const navigate = useNavigate()
     useEffect(() => {
         requestProductDetail()
     }, [])
@@ -19,16 +22,28 @@ const ProductInfo = (props) => {
         } catch {}
     }
 
+    const onClickBack = () => {
+        navigate('/')
+    }
+
     return (
         <div>
             <Header/>
-            {productdetail && (
-                <Detail
-                    name={productdetail.name || ''}
-                    description={productdetail.short_description || ''}
-                    price={productdetail.regular_price || ''}
-                />
-            )}
+            <div className="Product-screen">
+                <div className="Product-back-btn-wrapper">
+                    <button className="Product-back-btn" onClick={onClickBack}>
+                        <h3><IoIosArrowBack/> Regresar</h3>
+                    </button>
+                </div>
+                {productdetail && (
+                    <Detail
+                        images={productdetail.images || ''}
+                        name={productdetail.name || ''}
+                        description={productdetail.short_description || ''}
+                        price={Number(productdetail.regular_price).toFixed(2).toLocaleString() || ''}
+                    />
+                )}
+            </div>
         </div>
     )
 }
