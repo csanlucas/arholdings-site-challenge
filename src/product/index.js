@@ -8,6 +8,7 @@ import {API_URL, API_ENDPOINT} from '../utils/api'
 import './Product.css'
 
 const ProductInfo = (props) => {
+    const [isLoading, setIsLoading] = useState(false)
     const [productdetail, setProductDetail] = useState()
     const {sku} = useParams()
     const navigate = useNavigate()
@@ -15,15 +16,38 @@ const ProductInfo = (props) => {
         requestProductDetail()
     }, [])
     async function requestProductDetail() {
+        setIsLoading(true)
         try{
             const response = await fetch(`${API_URL}${API_ENDPOINT.PRODUCT_DETAIL_SKU.replace('{value}', sku)}`)
             const json = await response.json()
-            setProductDetail(json['results'][0])
-        } catch {}
+            if (json['results'].length > 0) {
+                setProductDetail(json['results'][0])
+            } else {
+                setProductDetail(undefined)
+            }
+        } catch (error) {}
+        setIsLoading(false)
     }
 
     const onClickBack = () => {
         navigate('/')
+    }
+
+    const getProductContent = () => {
+        if (isLoading) {
+            return (<p>Loading... </p>)
+        } else if (productdetail) {
+            return (
+                <Detail
+                    images={productdetail.images || ''}
+                    name={productdetail.name || ''}
+                    description={productdetail.short_description || ''}
+                    price={Number(productdetail.regular_price).toFixed(2).toLocaleString() || ''}
+                />
+            )
+        } else {
+            return <h2>Producto no encontrado</h2>
+        }
     }
 
     return (
@@ -35,14 +59,7 @@ const ProductInfo = (props) => {
                         <h3><IoIosArrowBack/> Regresar</h3>
                     </button>
                 </div>
-                {productdetail && (
-                    <Detail
-                        images={productdetail.images || ''}
-                        name={productdetail.name || ''}
-                        description={productdetail.short_description || ''}
-                        price={Number(productdetail.regular_price).toFixed(2).toLocaleString() || ''}
-                    />
-                )}
+                {getProductContent()}
             </div>
         </div>
     )
