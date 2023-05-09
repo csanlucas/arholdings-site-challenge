@@ -17,6 +17,7 @@ const Detail = (props) => {
         return null
     }
     const dotColors = ['#0c0c0c', '#bbb', '#da6c2c']
+    const shopify_last_updated = (props.shopify_data && props.shopify_data.last_updated) ? new Date(props.shopify_data.last_updated) : ''
     return (
         <div >
             <div className="Product-container">
@@ -32,6 +33,9 @@ const Detail = (props) => {
                             key={`pdc-${index}`}
                         />
                     ))}
+                    {shopify_last_updated &&
+                        (<p>Última actualización en shopify: {shopify_last_updated.toLocaleDateString()}</p>)
+                    }
                 </div>
             </div>
         </div>

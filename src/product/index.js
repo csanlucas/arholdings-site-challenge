@@ -43,6 +43,7 @@ const ProductInfo = (props) => {
                     name={productdetail.name || ''}
                     description={productdetail.short_description || ''}
                     price={Number(productdetail.regular_price).toFixed(2).toLocaleString() || ''}
+                    shopify_data={productdetail.shopify_sync_data}
                 />
             )
         } else {
